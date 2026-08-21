@@ -1,5 +1,5 @@
 ---
-student: "Brage AlvsvÃ¥g"
+student: "Brage Alvsvåg"
 title: "Improving fish detection using efficient neural networks"
 year: 2022
 link: ""

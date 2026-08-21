@@ -41,15 +41,36 @@ function slugFromFilename(filename) {
   return filename.replace(/\.md$/i, "");
 }
 
+/**
+ * Content files are UTF-8. The classic failure is mojibake: a UTF-8 file that
+ * was read as Latin-1/CP1252 somewhere and written back out, turning "å" into
+ * "Ã¥". Those byte pairs are valid UTF-8, so nothing downstream complains --
+ * the wrong characters just end up on the site. Catch them at build time.
+ */
+const MOJIBAKE_RE = /Ã[\x80-\xbf]|â€[\x80-\xbf\x9d]?|Â[\xa0-\xbf]/;
+
+function checkEncoding(raw, relPath) {
+  if (raw.includes("�")) {
+    fail(`${relPath}: contains U+FFFD replacement characters -- the file is not valid UTF-8. Re-save it as UTF-8.`);
+  } else if (MOJIBAKE_RE.test(raw)) {
+    const line = raw.split(/\r?\n/).find((l) => MOJIBAKE_RE.test(l));
+    fail(`${relPath}: looks like mojibake (UTF-8 decoded as Latin-1), e.g. "${line.trim()}". Re-save it as UTF-8.`);
+  }
+}
+
 function readMarkdownDir(dir) {
   if (!fs.existsSync(dir)) return [];
+  const relDir = path.relative(ROOT, dir).replace(/\\/g, "/");
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".md"))
     .sort()
     .map((filename) => {
       const full = path.join(dir, filename);
-      const raw = fs.readFileSync(full, "utf-8");
+      // Strip a UTF-8 BOM if an editor added one -- gray-matter would
+      // otherwise not recognise the leading "---" and skip the frontmatter.
+      const raw = fs.readFileSync(full, "utf-8").replace(/^﻿/, "");
+      checkEncoding(raw, `${relDir}/${filename}`);
       const { data, content } = matter(raw);
       return {
         slug: slugFromFilename(filename),

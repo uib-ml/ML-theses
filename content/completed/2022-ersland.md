@@ -1,5 +1,5 @@
 ---
-student: "BÃ¥rd Ersland"
+student: "Bård Ersland"
 title: "Memory-based control for quadrupedal locomotion - a sim-to-real study"
 year: 2022
 link: ""

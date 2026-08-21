@@ -1,5 +1,5 @@
 ---
-student: "Johanna JÃ¸sang"
+student: "Johanna Jøsang"
 title: "Rule mining on extended knowledge graphs"
 year: 2022
 link: "https://hdl.handle.net/11250/3001384"

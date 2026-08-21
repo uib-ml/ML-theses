@@ -75,16 +75,23 @@ async function initFacetPage(config) {
     if (!Array.isArray(state[facet.key])) state[facet.key] = [];
   }
 
-  // Build facet option lists (unique values + counts against the *current*
-  // full set, recomputed as other filters change so counts stay honest).
+  // Build facet option lists. Options are ordered by how many entries carry
+  // each value (most first, ties alphabetical), so the busiest tags,
+  // supervisors and ECTS sizes sit at the top of each list. These totals are
+  // taken over the whole data set rather than the current filtering, so the
+  // option order stays put while you click checkboxes -- the per-option counts
+  // shown next to them (see renderFilters) are the context-sensitive ones.
+  // A facet can opt out with its own `sort` (completed.html sorts years).
   function optionValuesFor(facetKey) {
     const facet = facets.find((f) => f.key === facetKey);
-    const set = new Set();
+    const totals = new Map();
     for (const item of items) {
-      for (const v of facet.getValues(item) || []) set.add(v);
+      for (const v of new Set(facet.getValues(item) || [])) {
+        totals.set(v, (totals.get(v) || 0) + 1);
+      }
     }
-    const sortFn = facet.sort || ((a, b) => a.localeCompare(b));
-    return Array.from(set).sort(sortFn);
+    const sortFn = facet.sort || ((a, b) => totals.get(b) - totals.get(a) || a.localeCompare(b));
+    return Array.from(totals.keys()).sort(sortFn);
   }
 
   function matches(item) {

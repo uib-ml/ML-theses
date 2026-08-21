@@ -1,5 +1,5 @@
 ---
-student: "Peter LÃ¸khammer Liessem"
+student: "Peter Løkhammer Liessem"
 title: "Object Tracking Approach for Catch Estimation on Trawl Surveys"
 year: 2023
 link: "https://hdl.handle.net/11250/3073842"
