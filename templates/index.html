@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Available Master's Thesis Topics — ML Group, UiB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1 class="site-title">Machine Learning Group</h1>
+      <p class="site-subtitle">Master's thesis topics &middot; Department of Informatics, University of Bergen</p>
+      <nav class="site-nav">
+        <a href="index.html" class="active">Available topics</a>
+        <a href="completed.html">Completed theses</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="filters" id="filters"></aside>
+      <div>
+        <div class="results-bar" id="results-bar"></div>
+        <div class="card-list" id="card-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    function ectsFacetValues(ects) {
+      if (ects === "30/60") return ["30", "60"];
+      if (ects) return [ects];
+      return [];
+    }
+
+    function renderTopicCard(item) {
+      const tagsHtml = item.tags
+        .map(
+          (t) =>
+            `<button type="button" class="tag-pill" data-facet-toggle="${escapeHtml(t)}" data-facet-key="tags">${escapeHtml(t)}</button>`
+        )
+        .join("");
+
+      const supervisorHtml = item.supervisors
+        .map((s) =>
+          s.url
+            ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.name)}</a>`
+            : escapeHtml(s.name)
+        )
+        .join(", ");
+      const advisorLabel = item.supervisors.length > 1 ? "Advisors" : "Advisor";
+
+      const ectsLabel = item.ects === "30/60" ? "30 or 60 ECTS" : item.ects ? `${escapeHtml(item.ects)} ECTS` : "";
+      const takenLabel = item.status && item.status !== "available" ? `<span class="status-taken">(${escapeHtml(item.status)})</span>` : "";
+
+      return `
+        <article class="card">
+          <h2 class="card-title">${escapeHtml(item.title)} ${takenLabel}</h2>
+          <div class="card-meta">
+            <span>${advisorLabel}: ${supervisorHtml}</span>
+            ${ectsLabel ? `<span class="ects-badge">${ectsLabel}</span>` : ""}
+          </div>
+          <div class="card-description">${item.descriptionHtml}</div>
+          ${tagsHtml ? `<div class="tag-row">${tagsHtml}</div>` : ""}
+        </article>
+      `;
+    }
+
+    initFacetPage({
+      dataUrl: "data/topics.json",
+      listSelector: "#card-list",
+      filtersSelector: "#filters",
+      resultsBarSelector: "#results-bar",
+      emptyMessage: "No available topics match these filters.",
+      facets: [
+        { key: "tags", label: "Tags", getValues: (item) => item.tags },
+        { key: "ects", label: "ECTS", getValues: (item) => ectsFacetValues(item.ects) },
+        { key: "supervisor", label: "Supervisor", getValues: (item) => item.supervisors.map((s) => s.name) },
+      ],
+      searchFields: (item) => [
+        item.title,
+        item.supervisors.map((s) => s.name).join(" "),
+        stripHtml(item.descriptionHtml),
+        item.tags.join(" "),
+      ],
+      renderCard: renderTopicCard,
+    });
+  </script>
+</body>
+</html>

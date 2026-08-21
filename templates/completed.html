@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Completed Master's Theses — ML Group, UiB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1 class="site-title">Machine Learning Group</h1>
+      <p class="site-subtitle">Master's thesis topics &middot; Department of Informatics, University of Bergen</p>
+      <nav class="site-nav">
+        <a href="index.html">Available topics</a>
+        <a href="completed.html" class="active">Completed theses</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="filters" id="filters"></aside>
+      <div>
+        <div class="results-bar" id="results-bar"></div>
+        <div class="card-list" id="card-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/app.js"></script>
+  <script>
+    function renderCompletedCard(item) {
+      const tagsHtml = item.tags
+        .map(
+          (t) =>
+            `<button type="button" class="tag-pill" data-facet-toggle="${escapeHtml(t)}" data-facet-key="tags">${escapeHtml(t)}</button>`
+        )
+        .join("");
+
+      const titleHtml = item.link
+        ? `<a class="thesis-link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>`
+        : escapeHtml(item.title);
+
+      const metaParts = [String(item.year)];
+
+      return `
+        <article class="card">
+          <h2 class="card-title">${escapeHtml(item.student)}. ${titleHtml}</h2>
+          <div class="card-meta">${metaParts.map((p) => `<span>${p}</span>`).join("")}</div>
+          ${item.descriptionHtml ? `<div class="card-description">${item.descriptionHtml}</div>` : ""}
+          ${tagsHtml ? `<div class="tag-row">${tagsHtml}</div>` : ""}
+        </article>
+      `;
+    }
+
+    initFacetPage({
+      dataUrl: "data/completed.json",
+      listSelector: "#card-list",
+      filtersSelector: "#filters",
+      resultsBarSelector: "#results-bar",
+      emptyMessage: "No completed theses match these filters.",
+      facets: [
+        { key: "year", label: "Year", getValues: (item) => (item.year ? [String(item.year)] : []), sort: (a, b) => b.localeCompare(a) },
+        { key: "tags", label: "Tags", getValues: (item) => item.tags },
+      ],
+      searchFields: (item) => [item.student, item.title, item.tags.join(" ")],
+      renderCard: renderCompletedCard,
+    });
+  </script>
+</body>
+</html>

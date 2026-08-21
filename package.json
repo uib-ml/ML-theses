@@ -1,0 +1,15 @@
+{
+  "name": "ml-group-thesis-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static site for Master's thesis topics and completed theses, ML group, University of Bergen",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "npx --yes http-server dist -p 8080 -c-1"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0"
+  }
+}
