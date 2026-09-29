@@ -2,7 +2,7 @@
 title: "Optimizing Jet Reconstruction with Quantum-Based Clustering Techniques"
 supervisor: ["Nello Blaser", "Konrad Tywoniuk"]
 supervisor_url: ["https://www.uib.no/en/persons/Nello.Blaser", "https://www4.uib.no/finn-ansatte/Konrad.Tywoniuk"]
-ects: "30/60"
+ects: "60"
 tags: ["Optimization", "Computational", "Applied"]
 status: "available"
 ---
