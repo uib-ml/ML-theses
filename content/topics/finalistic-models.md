@@ -8,8 +8,8 @@ status: "available"
 ---
 The behavior of an agent may be explained both in causal terms (what has caused a certain behavior) or in finalistic terms (what aim justifies a certain behaviour). While causal reasoning is well explained by different mathematical formalisms (e.g., structural causal models), finalistic reasoning is still an object of research.
 
-In this project we want to explore how a recently-proposed framework for finalistic reasoning [1] may be used to model intentions and counterfactuals in a causal bandit setting, or how it could be used to enhance inverse reinforcement learning.
+In this project we want to explore how a recently-proposed framework for finalistic reasoning [1] may be used to model intentions and to perform teleological inference, specifically detecting the presence of agents and inferring their aims.
 
 ## Reference
 
-[1] Compagno, Dario. "Final models: A finalistic interpretation of statistical correlation." arXiv preprint arXiv:2310.02272 (2023).
+[1] Compagno, Dario, and Fabio Massimo Zennaro. "Teleological Inference in Structural Causal Models via Intentional Interventions." arXiv preprint arXiv:2603.18968 (2026).
