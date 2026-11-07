@@ -10,6 +10,8 @@ Estimates of welfare technology spending in 2049 are projected to reach 8 billio
 
 The project might focus on sensing based on beamforming feedback information (BFI), and it might include building a small experimental set-up, testing what activity and presence information can be extracted from BFI, and assessing how reliable it is in realistic home conditions.
 
+[Video link](https://www.youtube.com/watch?v=-y0jBRBsWJ4)
+
 ## Reference
 
 [1] Touhiduzzaman, Md, et al. "Wireless sensing-based daily activity tracking system deployment in low-income senior housing environments." Proceedings of the 30th Annual International Conference on Mobile Computing and Networking. 2024.
